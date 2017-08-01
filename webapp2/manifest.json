@@ -1,0 +1,14 @@
+{
+  "short_name": "AtB",
+  "name": "AtBMobilett",
+  "icons": [
+    {
+      "src": "144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "https://luuring.github.io/webapp/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

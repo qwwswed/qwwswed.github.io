@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="theme-color" content="#A4AE00">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" id="favicon" type="image/png" href="144x144.png"/>
+    <link rel="manifest" href="/webapp/manifest.json">
+    <title>AtB Mobileth</title>
+
+    <meta name="description" content="This webpage is not intended for use on busses in Trondheim, and it is just made for fun. All use is on own responsibility. We take no responsibility of bills that might be issued when used.">
+    <script src="sha256.min.js" type="text/javascript"></script>
+    <style type="text/css">
+      html {
+        background: url(newticket3.png) no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-color: #3E3E3E;
+            overflow: hidden;
+            display:none;
+      }
+
+      .overlay{
+        background-color:white;
+        position: absolute;
+        top:0px;
+        left:0px;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        display: none;
+      }
+
+      .qr{
+        width: 925px;
+        margin: auto;
+        display: block;
+      }
+
+      .content{
+        height: 101%;
+      }
+
+      .title,.date,.code,.price, .price2, .ticket{
+        font-family: 'Roboto-Bold';
+        font-size: 3.1em;
+        color: #111;
+        position: absolute;
+        top: 215px;
+        left: 757px;
+      }
+
+      .title{
+        font-family: 'Roboto-Bold';
+        font-size: 4.3em;
+        color: #050505;
+        position: absolute;
+        top: 285px;
+        left: 532px;
+      }
+
+      .count {
+        font-family: 'Roboto-Bold';
+        color: #85b200;
+        font-size: 5.2em;
+        left: 10px;
+        margin-top: -13px;
+        margin-left: 40px;
+        width: 305px;
+        display:inline-block;
+      }
+
+      .date{
+        font-family: 'Roboto';
+        font-size: 2.3em;
+        color: #838383;
+        top: 1173px;
+        left: 85px;
+      }
+
+      .code{
+        font-size: 6.6em;
+        margin-top: 7%;
+        text-align: center;
+        position: initial;
+        padding-bottom: 18%;
+      }
+
+      .ticket{
+        top: 724px;
+        font-size: 4.3em;
+        left: 90px;
+      }
+
+      .price,.price2{
+        top: 727px;
+        right: 90px;
+        font-size: 4em;
+        left: auto;
+        text-align:right;
+      }
+
+      .price2{
+        top:834px;
+      }
+
+      #vat{
+        font-family: 'Roboto';
+        font-size: 2.3em;
+        color: #838383;
+        top: 1023px;
+        left: 415px;
+        position: absolute;
+      }
+
+      #vat_base{
+        font-family: 'Roboto';
+        font-size: 2.3em;
+        color: #838383;
+        top: 1074.5px;
+        left: 368px;
+        position: absolute;
+      }
+
+      #polecount{
+        position: absolute;
+        top:580px;
+        left:44px;
+        display:inline-block;
+      }
+
+      #div03 {
+        background: #81e0ef;
+        width: 325px;
+        height: 65px;
+        top: 580px;
+        left: 44px;
+        background: -webkit-linear-gradient(-45deg,           #85B200 30%,           #000000 30%, #000000 45%,           #85B200 40%,           #85B200 80%,           #000000 80%);
+        background-size: 160px 160px;
+        -webkit-animation: barberpole 1s infinite linear;
+        display:inline-block;
+      }
+
+      #moreThan{
+      font-size: 5em;
+      font-family: Roboto;
+      top: 1000px;
+      left: 70px;
+      width: 593px;
+      position: absolute;
+      text-align: center;
+      display: none;
+      }
+
+      .button{
+        width: 254px;
+        height: 259px;
+        position: absolute;
+        top: 1010px;
+        right: 80px;
+      }
+
+      #wordDay{
+        font-family: Roboto;
+        margin-top: 100px;
+      }
+
+      .green_left{
+        background: #a4ad22;
+        height: 145px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 40px;
+      }
+
+      .green_right{
+        background: #a4ad22;
+        height: 145px;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 40px;
+      }
+
+      .textOverlay{
+        border: 210px solid;
+        border-bottom: 450px solid;
+        border-top: 390px solid;
+        height: calc(100% - 460px) !important;
+        width: calc(100% - 255px) !important;
+      }
+
+      @-webkit-keyframes barberpole {
+        from {background-position: 160px;}
+        to {background-position: 0px;}
+      }
+
+      @font-face {
+        font-family: 'Roboto-Bold';
+        src: url('Roboto-BoldCondensed.ttf') format('truetype');
+        font-weight: bold;
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        src: url('Roboto-Regular.ttf') format('truetype');
+      }
+
+      #more_options {
+        height: 50px;
+        width: 60px;
+        position: absolute;
+        left: 50px;
+        top: 55px;
+      }
+
+      #sidebar {
+        position: absolute;
+        width: 700px;
+        height: 100vh;
+        top: 0px;
+        background: #f3f3f3;
+        z-index: 1;
+        left: -700px;
+        transition: left .2s;
+        font-size: 50px;
+        overflow: hidden;
+        border-right: 1px solid black;
+        color: #2d2d2d;
+      }
+
+      .overlay2 {
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background-color: rgba(0,0,0,.5);
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity .2s;
+      }
+
+      ul {
+        list-style: none;
+        padding-left: 0px;
+      }
+
+      #first{
+        font-family: sans-serif;
+        padding: 0 40px 70px 40px;
+        font-weight:bold;
+        margin-top:69px;
+      }
+
+      #close {
+        position: absolute;
+        font-family: helvetica;
+        right: 40px;
+        top: 60px;
+        font-size: 46px;
+        color: grey;
+      }
+
+      #disclaimer {
+        position: absolute;
+        bottom: 25px;
+        color: grey;
+        font-size: 36px;
+        text-align: center;
+        width: 50%;
+        left: 156px;
+      }
+
+      ul li a{
+        text-decoration: none;
+        color: black;
+        border-top: 1px solid black;
+        width: 100%;
+        padding: 40px;
+        display: block;
+        border-bottom: 1px solid black;
+        transition:background-color .5s;
+        font-family: sans-serif;
+        -webkit-tap-highlight-color:transparent;
+      }
+
+      ul li a:hover, ul li a:active{
+        background-color:#eaeaea;
+      }
+
+      .number_tickets{
+        display: flex;
+        text-align: center;
+      }
+
+      .top-title {
+        text-align:left;
+        color: white;
+        font-family: 'Roboto';
+        font-size: 53px;
+        margin-top: 48px;
+        margin-left:152px;
+        font-weight:300;
+      }
+
+      #iphone_exclusive {
+        display:none;
+        position: absolute;
+        right: 43px;
+        width: 11%;
+        top: 7px;
+      }
+
+      @media only screen
+      and (min-device-width : 320px)
+      and (max-device-width : 480px) {
+
+        html{
+          background-size:95% !important;
+          background-position: 50% 0% !important;
+          background-color: #313131 !important;
+        }
+
+        .title {
+            font-family: 'Roboto-Bold' !important;
+            font-size: 4.3em !important;
+            color: #050505 !important;
+            position: absolute !important;
+            top: 266px !important;
+            left: 532px !important;
+        }
+
+        #polecount {
+            position: absolute !important;
+            top: 534px !important;
+            left: 66px !important;
+        }
+
+        .ticket {
+            top: 678px !important;
+            font-size: 4.3em !important;
+            left: 112px !important;
+        }
+
+        .price, .price2 {
+            top: 681px !important;
+            right: 112px !important;
+            font-size: 4em !important;
+            left: auto !important;
+            text-align: right !important;
+        }
+
+        .price2 {
+            top: 788px !important;
+        }
+
+        .date {
+            font-family: 'Roboto' !important;
+            font-size: 2.3em !important;
+            color: #838383 !important;
+            top: 1118px !important;
+            left: 107px !important;
+        }
+
+        #vat_base {
+            font-family: 'Roboto' !important;
+            font-size: 2.3em !important;
+            color: #838383 !important;
+            top: 1019.5px !important;
+            left: 374px !important;
+            position: absolute !important;
+        }
+
+        #vat {
+            font-family: 'Roboto' !important;
+            font-size: 2.3em !important;
+            color: #838383 !important;
+            top: 969px !important;
+            left: 417px !important;
+            position: absolute !important;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="green_left"></div>
+    <div class="green_right"></div>
+    <div class="overlay2" id="overlay2"></div>
+    <div class="overlay" id="overlay">
+      <div class="code" id="wordDay"></div>
+      <div class="code" id="code">N6CCUF</div>
+        <div id="moreThan">
+          00:01
+        </div>
+        <img class="qr" src="https://chart.googleapis.com/chart?cht=qr&chl=Denne%20siden%20er%20laget%20grunnet%20deres%20stive%20priser,%20kanskje%20det%20er%20p%C3%A5%20tide%20%C3%A5%20skru%20de%20litt.%20Denne%20siden%20er%20ikke%20ment%20for%20bruk,%20men%20er%20bare%20laget%20for%20morroskyld.%20All%20bruk%20er%20p%C3%A5%20eget%20annsvar&choe=UTF-8&chs=500x500" alt="QR">
+        <div class="code" id="bottom_code"></div>
+      </div>
+    <div class="content">
+  <div id="sidebar">
+    <div id="close">Close</div>
+    <ul>
+      <li id="first">Billettype</li>
+      <li>
+        <a href="#" id="nighttime">Nattbillett</a>
+      </li>
+      <li>
+        <a href="#" id="daytime">Voksenbillett &#10003;</a>
+      </li>
+      <li>
+        <a href="#" id="childtime">Barnebillett</a>
+      </li>
+      <li>
+        <a href="#" id="snikebillett">Snikebillett</a>
+      </li>
+      <li>
+        <div class="number_tickets">
+          <a href="#" id="less_tickets">-</a>
+          <a href="#" id="num_tickets">1</a>
+          <a href="#" id="more_tickets">+</a>
+        </div>
+      </li>
+    </ul>
+    <div id="disclaimer">Do not use this app, use at your own risk. You have been warned</div>
+  </div>
+  <div id="more_options"></div>
+      <div class="top-title">Mine billetter</div>
+      <img src="share-test.png" alt="" id="iphone_exclusive">
+      <div class="title" id="valid">10.19</div>
+      <div class="ticket" id="ticket">1 Voksen</div>
+      <div class="price" id="price">kr 32,00</div>
+      <div class="price2" id="price2">kr 32,00</div>
+      <div id="vat">2,91</div>
+      <div id="vat_base">29,09</div>
+      <div class="date" id="date">28/07/2016 08:49</div>
+      <div id="polecount">
+        <div id="div03" style="width: 425.8px;"></div><div class="count" id="count">01:22:39</div>
+      </div>
+      <div class="button" id="button"></div>
+    </div>
+    <script language="JavaScript">
+    <!--
+
+    var people        = 1;
+    var add           = "";
+    var counterobj    = document.getElementById("count");
+    var currentsecond = counterobj.innerHTML = Math.floor(Math.random() * 59);
+    var currentmin    = Math.floor(12 + Math.random() * 17);
+    var zer           = "0";
+    var mzer          = "0";
+    var price         = 32.8;
+    var ticket        = "Voksen";
+    var clickedButton = false;
+    var colorArray = ["#ffff01", "#a4a4a4", "#02ff02", "#ab0035", "#9e2ad3"];
+    var wordsDays  = ["Jordbær", "Øretinget", "Munkholm", "Cicignon", "Storheia"];
+    var rand = Math.floor(Math.random()*(colorArray.length));
+    var color = colorArray[rand];
+    var word  = wordsDays[rand];
+    var options_show = false;
+    var current_ticket = "daytime";
+    var tickets = {
+      nighttime: "Nattbillett",
+      daytime: "Voksenbillett",
+      childtime: "Barnebillett",
+      snikebillett: "Snikebillett"
+    }
+
+    function update_decimal(toUpdate){
+      return toUpdate.toFixed(2).toString().replace(".",",");
+    }
+
+    function update_price_people() {
+      document.getElementById("ticket").innerHTML   = people + " " + ticket;
+      document.getElementById("price").innerHTML    = "kr " + update_decimal(price * people) + "";
+      document.getElementById("price2").innerHTML   = "kr " + update_decimal(price * people) + "";
+      document.getElementById("vat").innerHTML      = ((Math.round((((price * people) / 110) * 10) * 100))/100).toString().replace(".", ",");
+      document.getElementById("vat_base").innerHTML = ((Math.round((((price * people) / 110) * 100) * 100))/100).toString().replace(".", ",");
+    }
+
+    function countdown(endtime) {
+        time    = getTimeRemaining(endtime);
+        endTime = endtime
+        h       = time.hours;
+        m       = time.minutes;
+        s       = time.seconds
+        width   = ((h*60*60) + (m*60) + s)*0.1;
+        crTime = new Date()
+        diff = Math.floor((crTime.getTime() - (startTime.getTime())) / 1000);
+        diffMinutes = pad(Math.floor(diff / 60),2);
+        diffSeconds =  pad(diff - diffMinutes * 60,2);
+        diffText    = diffMinutes >= 15 ? "Mer enn 15:00" : diffMinutes + ":" + diffSeconds;
+        counterobj.innerHTML  = pad(h,2) + ":" + pad(m,2) + ":" + pad(s,2);
+        document.getElementById("div03").style.width = width + "px";
+        document.getElementById("moreThan").innerHTML = diffText;
+        if(h >= 0 && m >= 0 && s >= 0) {
+          setTimeout("countdown(endTime)", 1000);
+        } else {
+          initiate();
+        }
+    }
+
+
+    function getTimeRemaining(endtime){
+      var t = Date.parse(endtime) - Date.parse(new Date());
+      var seconds = Math.floor( (t/1000) % 60 );
+      var minutes = Math.floor( (t/1000/60) % 60 );
+      var hours = Math.floor( (t/(1000*60*60)) % 24 );
+      return {
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+      };
+    }
+
+    function pad(t, num){
+      if(num == 2) out = t < 10 ? "0"+t : t;
+      else if(num == 3) out = t < 10 ? "00"+t : t < 100 ? "0"+t : t;
+      return out;
+    }
+
+    Date.prototype.addHours = function(h) {
+       this.setTime(this.getTime() + (h*60*60*1000));
+       return this;
+    }
+
+    //date
+    Date.prototype.today = function() {
+        return ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + this.getFullYear();
+    }
+    Date.prototype.timeNow = function() {
+        return ((this.getHours() < 10) ? "0" : "") + this.getHours() +
+        ":" +
+        ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes()
+        ;
+    }
+
+    function clicked(e) {
+      clickedButton = !clickedButton;
+      if(clickedButton){
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("moreThan").style.display = "none";
+        document.getElementById("wordDay").style.display = "none";
+      }else{
+        document.getElementById("overlay").style.display = "none";
+        document.getElementsByClassName("qr")[0].style.display = "block";
+        document.getElementById("code").style.display = "block";
+        document.getElementById("bottom_code").style.display = "block";
+        document.getElementById("overlay").className = "overlay";
+        document.getElementById("overlay").style.borderColor = "none";
+        document.getElementsByTagName("html")[0].style.backgroundColor = "#3E3E3E";
+        document.getElementById("wordDay").style.display = "none";
+      }
+    }
+
+    function clicked_other(e) {
+      clickedButton = !clickedButton;
+      if(clickedButton){
+        document.getElementsByClassName("qr")[0].style.display = "none";
+        document.getElementById("code").style.display = "none";
+        document.getElementById("bottom_code").style.display = "none";
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("moreThan").style.display = "block";
+        document.getElementById("overlay").className = "overlay textOverlay";
+        document.getElementById("overlay").style.borderColor = color;
+        document.getElementsByTagName("html")[0].style.backgroundColor = color;
+        document.getElementById("wordDay").style.display = "block";
+      }else{
+        document.getElementById("overlay").style.display = "none";
+      }
+    }
+
+    function initiate(){
+      endTime  = new Date();
+      endTime.addHours(1.1+Math.random()*0.4);
+
+      startTime = new Date(endTime.valueOf() - 90 * 60000);
+
+      countdown(endTime);
+
+      var min  = endTime.getMinutes();
+      var hour = endTime.getHours();
+      var startHour = startTime.getHours();
+      var startMinutes = startTime.getMinutes();
+
+      if (((startHour == 0 && startMinutes > 10 && startMinutes < 59) || (startHour >= 1 && startHour <= 4)) && ((new Date()).getDay() == 5 || (new Date()).getDay() == 6)) {
+          ticket = "Natt";
+          price  = 100;
+      }
+
+      update_price_people();
+      document.getElementById("wordDay").innerHTML = word;
+      document.getElementById("valid").innerHTML    = ((hour < 10) ? "0" : "") + hour + "." + ((min < 10) ? "0" : "") + min;
+
+      //code
+      var da   = new Date();
+      var text = "";
+      var bot_text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+      var possNum  = "0123456789";
+
+      for (var i = 0; i < 6; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
+      for (var i = 0; i < 3; i++) bot_text += possNum.charAt(Math.floor(Math.random() * possNum.length));
+
+      var qr_text = possible.charAt(da.getMonth() + 2) + text + ";" + pad(endTime.getDate(),2) + "/" + pad(endTime.getMonth(),2) + "/" + (endTime.getYear()+1900) + " " + pad(endTime.getHours(),2) + ":" + pad(endTime.getMinutes(),2) + ";" + (3281920300000 + endTime.getTime()) + ";" + (startTime.getYear() + 1900) + "-" + pad(startTime.getMonth(),2) + "-" + pad(startTime.getMonth(),2) + " " + pad(startTime.getHours(),2) + ":" + pad(startTime.getMinutes(),2) + ":" + pad(startTime.getSeconds(),2) + ";";
+      var qr_hash = sha256(qr_text);
+
+      document.getElementById("code").innerHTML = "" + possible.charAt(da.getMonth() + 2) + text;
+      document.getElementById("bottom_code").innerHTML = bot_text;
+      document.getElementById("date").innerHTML = (new Date(endTime)).today() + " " + (new Date(endTime.valueOf() - 90 * 60000)).timeNow();
+      document.getElementsByClassName("qr")[0].src = "https://chart.googleapis.com/chart?cht=qr&chl=" + qr_text + qr_hash + "&choe=UTF-8&chs=500x500";
+    }
+
+    initiate();
+
+    function hideAddressBar()
+    {
+      if(!window.location.hash)
+      {
+          if(document.height < window.outerHeight)
+          {
+              document.body.style.height = (window.outerHeight + 100) + 'px';
+          }
+
+          setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+      }
+    }
+
+    function more_tickets(){
+      people = people + 1;
+      update_price_people();
+      document.getElementById("num_tickets").innerHTML = people;
+    }
+
+    function less_tickets(){
+      if(people > 1){
+        people = people - 1;
+        update_price_people();
+        document.getElementById("num_tickets").innerHTML = people;
+      }
+    }
+
+    function sidebar() {
+      if(options_show) {
+        document.getElementById("sidebar").style.left = "-700px";
+        document.getElementById("overlay2").style.opacity = 0;
+      } else {
+        document.getElementById("sidebar").style.left = "0px";
+        document.getElementById("overlay2").style.opacity = 1;
+      }
+      options_show = !options_show;
+    }
+
+    window.addEventListener("load", function(){
+      if(!window.pageYOffset){
+        hideAddressBar();
+      }
+      document.getElementsByTagName("html")[0].style.display = "block";
+      if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+         document.getElementsByClassName("top-title")[0].style.textAlign = "center";
+         document.getElementsByClassName("top-title")[0].style.marginLeft = "0px";
+         document.getElementById("iphone_exclusive").style.display = "block";
+      }
+
+    } );
+    window.addEventListener("orientationchange", hideAddressBar );
+    document.getElementById("more_tickets").addEventListener('click', more_tickets);
+    document.getElementById("less_tickets").addEventListener('click', less_tickets);
+    document.getElementById("button").addEventListener('click', clicked);
+    document.getElementById("polecount").addEventListener('click', clicked_other);
+    document.getElementById("overlay").addEventListener('click', clicked);
+    document.getElementById("more_options").addEventListener('click', sidebar);
+    document.getElementById("nighttime").addEventListener('click', function() {
+      ticket = "Natt";
+      price  = 100;
+      document.getElementById(current_ticket).innerHTML = tickets[current_ticket];
+      document.getElementById("nighttime").innerHTML = tickets["nighttime"] + " &#10003;";
+      current_ticket = "nighttime";
+      sidebar();
+      update_price_people();
+    });
+
+    document.getElementById("daytime").addEventListener('click', function() {
+      ticket = "Voksen";
+      price  = 32.8;
+      document.getElementById(current_ticket).innerHTML = tickets[current_ticket];
+      document.getElementById("daytime").innerHTML = tickets["daytime"] + " &#10003;";
+      current_ticket = "daytime";
+      sidebar();
+      update_price_people();
+    });
+
+    document.getElementById("childtime").addEventListener('click', function() {
+      ticket = "Barn";
+      price  = 16;
+      document.getElementById(current_ticket).innerHTML = tickets[current_ticket];
+      document.getElementById("childtime").innerHTML = tickets["childtime"] + " &#10003;";
+      current_ticket = "childtime";
+      sidebar();
+      update_price_people();
+    });
+
+    document.getElementById("snikebillett").addEventListener('click', function() {
+      ticket = "Sniker";
+      price  = 0;
+      document.getElementById(current_ticket).innerHTML = tickets[current_ticket];
+      document.getElementById("snikebillett").innerHTML = tickets["snikebillett"] + " &#10003;";
+      current_ticket = "snikebillett";
+      sidebar();
+      update_price_people();
+    });
+
+    document.getElementById("close").addEventListener('click', sidebar);
+
+    //-->
+  </script>
+  </body>
+</html>
