@@ -383,7 +383,7 @@
           font-size: 2em !important;
           color: #878787 !important;
           top: 1015.5px !important;
-          left: 218px !important;
+          left: 221px !important;
           position: absolute !important;
         }
 
@@ -392,7 +392,7 @@
           font-size: 2em !important;
           color: #878787 !important;
           top: 977px !important;
-          left: 227px !important;
+          left: 230px !important;
           position: absolute !important;
         }
       }
@@ -500,8 +500,8 @@
       document.getElementById("ticket").innerHTML   = people + " " + ticket;
       document.getElementById("price").innerHTML    = "kr " + update_decimal(price * people) + "";
       document.getElementById("price2").innerHTML   = "kr " + update_decimal(price * people) + "";
-      document.getElementById("vat").innerHTML      = ((Math.round((((price * people) / 110) * 10) * 100))/100).toString().replace(".", ",");
-      document.getElementById("vat_base").innerHTML = ((Math.round((((price * people) / 110) * 100) * 100))/100).toString().replace(".", ",");
+      document.getElementById("vat").innerHTML      = ((Math.round((((price * people) / 112) * 12) * 100))/100).toString().replace(".", ",");
+      document.getElementById("vat_base").innerHTML = ((Math.round((((price * people) / 112) * 100) * 100))/100).toString().replace(".", ",");
     }
 
     function countdown(endtime) {
